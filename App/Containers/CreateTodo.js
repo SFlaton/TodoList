@@ -7,36 +7,33 @@ import { connect } from 'react-redux'
 import TodoListActions from '../Redux/TodoListRedux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import RoundedButton from '../Components/RoundedButton'
+import _ from 'lodash'
 
 // Styles
 import styles from './Styles/CreateTodoStyle'
 
-type CreateTodoProps = {
-  dispatch: () => any,
-  fetching: boolean
-}
-
 class CreateTodo extends React.Component {
 
-  props: CreateTodoProps
+  constructor(props) {
+    super(props)
 
-  state: {
-    todo: string
+    const aap = props.todo
+    this.state = { aap }
   }
 
-  constructor(props: CreateTodoProps) {
-    super(props)
-    this.state = {
-      todo: ''
-    }
+  componentWillReceiveProps (newProps) {
+    console.log('FORTHENEWPROPS', newProps)
+    this.setState({
+      aap: newProps.todo
+    })
   }
 
   onTextChange = (text) => {
-    this.setState({todo: text })
+    this.setState({aap: text })
   }
 
   handlePressCreate = () => {
-    this.props.todoCreate(this.state.todo)
+    this.props.todoCreate(this.state.aap)
   }
 
   render() {
@@ -46,10 +43,10 @@ class CreateTodo extends React.Component {
         <Text style={styles.textStyle}>Add Todo</Text>
         <TextInput
           style={styles.textInputStyle}
-          value={this.state.todo}
+          value={this.state.aap}
           onChangeText={this.onTextChange}
         />
-      <RoundedButton onPress={this.handlePressCreate}>
+        <RoundedButton onPress={this.handlePressCreate}>
           save
         </RoundedButton>
       </View>
@@ -58,8 +55,9 @@ class CreateTodo extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  console.log('STATETOPROPS', _.get(state.todos, ['newTask']))
   return {
-    task: state.todo
+    todo: _.get(state.todos, ['newTask'])
   }
 }
 

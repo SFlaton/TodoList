@@ -8,7 +8,8 @@ const { Types, Creators } = createActions({
   todoListRequest: null,
   todoListSuccess: ['tasks'],
   todoListFailure: null,
-  todoCreate: ['task']
+  todoCreate: ['task'],
+  createSuccess: ['tasks']
 })
 
 export const TodoListTypes = Types
@@ -24,7 +25,7 @@ export const INITIAL_STATE = Immutable({
     created_at: "2017-01-13T11:20:45.848Z",
     updated_at: "2017-01-18T08:30:20.126Z"
   }],
-
+  newTask: '',
   fetching: null,
   error: null
 })
@@ -38,8 +39,12 @@ export const request = state =>
 // successful api lookup
 export const todoListSuccess = (state, action) => {
   const { tasks } = action
-  console.log('todo_state', state)
   return state.merge({ tasks, fetching: false, error: null })
+}
+
+export const createSuccess = (state, action) => {
+  const { tasks } = action
+  return state.merge({ tasks, fetching: false, error: null, newTask: '' })
 }
 
 // Something went wrong somewhere.
@@ -48,7 +53,7 @@ export const failure = state =>
 
 export const todoCreate = (state, action) => {
   const { task } = action
-  return state.merge({ fetching: false, error: false, task})
+  return state.merge({ fetching: false, error: false, newTask: task })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -56,6 +61,7 @@ export const todoCreate = (state, action) => {
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.TODO_LIST_REQUEST]: request,
   [Types.TODO_LIST_SUCCESS]: todoListSuccess,
+  [Types.CREATE_SUCCESS]: createSuccess,
   [Types.TODO_LIST_FAILURE]: failure,
   [Types.TODO_CREATE]: todoCreate,
 })
