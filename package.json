@@ -93,11 +93,6 @@
       "React$Element"
     ]
   },
-  "config": {
-    "ghooks": {
-      "pre-commit": "if [ -d 'ignite-base' ]; then cd ignite-base; fi; npm run lint"
-    }
-  },
   "main": "index.js",
   "repository": {},
   "license": "MIT"
