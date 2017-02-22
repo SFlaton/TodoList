@@ -32,11 +32,12 @@ export function * getTodoList (api, action) {
 export function * createTodo (api, action) {
   const { task } = action
 
-  const response = yield call(api.createTodo, task)
+  yield call(api.createTodo, task)
+  const response = yield call(api.getTodolist)
 
   if (response.ok) {
     console.log("succes!", response)
-    yield put(TodoListActions.todoListSuccess(response.data.task))
+    yield put(TodoListActions.createSuccess(response.data.tasks))
   } else {
     yield put(TodoListActions.todoListFailure())
   }
